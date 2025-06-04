@@ -52,8 +52,10 @@ export default function HomePage() {
     if (!games.length) return;
     const randIndex = Math.floor(Math.random() * games.length);
     const anglePerSlice = 360 / games.length;
-    const finalRotation = 360 * 5 + randIndex * anglePerSlice + anglePerSlice / 2;
-    setRotation(finalRotation);
+    const currentCenter =
+      (rotation + randIndex * anglePerSlice + anglePerSlice / 2) % 360;
+    const delta = 360 * 5 + 90 - currentCenter;
+    setRotation(rotation + delta);
     setTimeout(() => {
       setSelected(games[randIndex]);
     }, 2000); // match CSS transition duration
@@ -62,14 +64,16 @@ export default function HomePage() {
   return (
     <main className="container">
       <h1>Steam New Releases Wheel</h1>
-      <div className="wheel-container">
+      <div className="wheel-wrapper">
         <div className="pointer" />
-        <canvas
-          ref={canvasRef}
-          width={500}
-          height={500}
-          style={{ transform: `rotate(${rotation}deg)`, transition: 'transform 2s ease-out' }}
-        />
+        <div className="wheel-container">
+          <canvas
+            ref={canvasRef}
+            width={500}
+            height={500}
+            style={{ transform: `rotate(${rotation}deg)`, transition: 'transform 2s ease-out' }}
+          />
+        </div>
       </div>
       <button className="spin" onClick={spin}>Spin</button>
       {selected && (

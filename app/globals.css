@@ -11,10 +11,16 @@ body {
   gap: 1rem;
 }
 
-.wheel-container {
+
+.wheel-wrapper {
   position: relative;
   width: 500px;
   height: 500px;
+}
+
+.wheel-container {
+  width: 100%;
+  height: 100%;
   border: 4px solid #333;
   border-radius: 50%;
   overflow: hidden;
