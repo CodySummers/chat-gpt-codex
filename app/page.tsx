@@ -16,6 +16,7 @@ export default function HomePage() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [rotation, setRotation] = useState(0);
     const [seconds, setSeconds] = useState(5);
+    const [showOptions, setShowOptions] = useState(false);
 
     useEffect(() => {
         getGames()
@@ -66,6 +67,24 @@ export default function HomePage() {
 
     return (
         <main className="container">
+            <div className="options-container">
+                <button className="options-button" onClick={() => setShowOptions(!showOptions)}>
+                    Options
+                </button>
+                {showOptions && (
+                    <div className="options-window">
+                        <label htmlFor="duration">Spin Duration: {seconds}s</label>
+                        <input
+                            id="duration"
+                            type="range"
+                            min={5}
+                            max={120}
+                            value={seconds}
+                            onChange={(e) => setSeconds(Number(e.target.value))}
+                        />
+                    </div>
+                )}
+            </div>
             <h1>Steam New Releases Wheel</h1>
             <div className="wheel-wrapper">
                 <div className="pointer" />

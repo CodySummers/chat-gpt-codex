@@ -46,3 +46,21 @@ body {
 .result {
     margin-top: 1rem;
 }
+
+.options-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5rem;
+}
+
+.options-button {
+    padding: 0.25rem 0.5rem;
+}
+
+.options-window {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+}
