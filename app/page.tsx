@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { getGames } from './lib/steam';
 
 interface Game {
   id: number;
@@ -14,18 +15,9 @@ export default function HomePage() {
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
-    async function fetchGames() {
-      try {
-        const res = await fetch('https://store.steampowered.com/api/featuredcategories/');
-        const data = await res.json();
-        const newReleases = data?.new_releases?.items as any[];
-        const mapped = newReleases.map((it: any) => ({ id: it.id, name: it.name }));
-        setGames(mapped);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetchGames();
+    getGames()
+      .then((items) => setGames(items))
+      .catch((err) => console.error(err));
   }, []);
 
   useEffect(() => {
@@ -50,7 +42,8 @@ export default function HomePage() {
       ctx.textAlign = 'right';
       ctx.fillStyle = '#000';
       ctx.font = '14px sans-serif';
-      ctx.fillText(game.name, radius - 10, 0);
+      const text = game.name.length > 10 ? game.name.slice(0, 10) + '...' : game.name;
+      ctx.fillText(text, radius - 10, 0);
       ctx.restore();
     });
   }, [games]);
@@ -63,18 +56,19 @@ export default function HomePage() {
     setRotation(finalRotation);
     setTimeout(() => {
       setSelected(games[randIndex]);
-    }, 4000); // match CSS transition duration
+    }, 2000); // match CSS transition duration
   };
 
   return (
     <main className="container">
       <h1>Steam New Releases Wheel</h1>
       <div className="wheel-container">
+        <div className="pointer" />
         <canvas
           ref={canvasRef}
           width={500}
           height={500}
-          style={{ transform: `rotate(${rotation}deg)`, transition: 'transform 4s ease-out' }}
+          style={{ transform: `rotate(${rotation}deg)`, transition: 'transform 2s ease-out' }}
         />
       </div>
       <button className="spin" onClick={spin}>Spin</button>
