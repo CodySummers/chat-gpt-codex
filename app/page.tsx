@@ -15,6 +15,7 @@ export default function HomePage() {
     const [selected, setSelected] = useState<Game | null>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [rotation, setRotation] = useState(0);
+    const [seconds, setSeconds] = useState(5);
 
     useEffect(() => {
         getGames()
@@ -55,11 +56,12 @@ export default function HomePage() {
         const randIndex = Math.floor(Math.random() * games.length);
         const anglePerSlice = 360 / games.length;
         const currentCenter = (rotation + randIndex * anglePerSlice + anglePerSlice / 2) % 360;
-        const delta = 360 + 180 * 5 + 90 - currentCenter;
+        const delta = 360 + 180 * 5 + 90 - currentCenter + seconds * 360;
         setRotation(rotation + delta);
         setTimeout(() => {
+            console.log(`Selected game: ${games[randIndex].name}`);
             setSelected(games[randIndex]);
-        }, 2000); // match CSS transition duration
+        }, seconds * 1000);
     };
 
     return (
@@ -72,7 +74,7 @@ export default function HomePage() {
                         ref={canvasRef}
                         width={500}
                         height={500}
-                        style={{ transform: `rotate(${rotation}deg)`, transition: "transform 2s ease-out" }}
+                        style={{ transform: `rotate(${rotation}deg)`, transition: `transform ${seconds}s ease-out` }}
                     />
                 </div>
             </div>
