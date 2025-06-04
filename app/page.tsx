@@ -16,6 +16,8 @@ export default function HomePage() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [rotation, setRotation] = useState(0);
     const [seconds, setSeconds] = useState(5);
+    const [showOptions, setShowOptions] = useState(false);
+    const [isSpinning, setIsSpinning] = useState(false);
 
     useEffect(() => {
         getGames()
@@ -52,20 +54,42 @@ export default function HomePage() {
     }, [games]);
 
     const spin = () => {
-        if (!games.length) return;
+        setSelected(null);
+        if (!games.length || isSpinning) return;
         const randIndex = Math.floor(Math.random() * games.length);
         const anglePerSlice = 360 / games.length;
         const currentCenter = (rotation + randIndex * anglePerSlice + anglePerSlice / 2) % 360;
         const delta = 360 + 180 * 5 + 90 - currentCenter + seconds * 360;
         setRotation(rotation + delta);
+        setIsSpinning(true);
         setTimeout(() => {
             console.log(`Selected game: ${games[randIndex].name}`);
             setSelected(games[randIndex]);
+            setIsSpinning(false);
         }, seconds * 1000);
     };
 
     return (
         <main className="container">
+            <div className="options-container">
+                <button className="options-button" onClick={() => setShowOptions(!showOptions)}>
+                    Options
+                </button>
+                {showOptions && (
+                    <div className="options-window">
+                        <label htmlFor="duration">Spin Duration: {seconds}s</label>
+                        <input
+                            id="duration"
+                            type="range"
+                            min={5}
+                            max={120}
+                            value={seconds}
+                            onChange={(e) => setSeconds(Number(e.target.value))}
+                            disabled={isSpinning}
+                        />
+                    </div>
+                )}
+            </div>
             <h1>Steam New Releases Wheel</h1>
             <div className="wheel-wrapper">
                 <div className="pointer" />
@@ -78,7 +102,7 @@ export default function HomePage() {
                     />
                 </div>
             </div>
-            <button className="spin" onClick={spin}>
+            <button className="spin" onClick={spin} disabled={isSpinning}>
                 Spin
             </button>
             {selected && (
