@@ -52,7 +52,7 @@ export default function HomePage() {
                 game.name.length > characterLimit
                     ? game.name.slice(0, characterLimit) + "..."
                     : game.name;
-            ctx.fillText(text, radius - 10, fontSize / 2);
+            ctx.fillText(text, radius - 10, fontSize * 0.3);
             ctx.restore();
         });
     }, [games]);
