@@ -46,9 +46,13 @@ export default function HomePage() {
             ctx.rotate(angleStart + (angleEnd - angleStart) / 2);
             ctx.textAlign = "right";
             ctx.fillStyle = "#000";
-            ctx.font = "14px sans-serif";
-            const text = game.name.length > characterLimit ? game.name.slice(0, characterLimit) + "..." : game.name;
-            ctx.fillText(text, radius - 10, 0);
+            const fontSize = 14;
+            ctx.font = `${fontSize}px sans-serif`;
+            const text =
+                game.name.length > characterLimit
+                    ? game.name.slice(0, characterLimit) + "..."
+                    : game.name;
+            ctx.fillText(text, radius - 10, fontSize * 0.3);
             ctx.restore();
         });
     }, [games]);
