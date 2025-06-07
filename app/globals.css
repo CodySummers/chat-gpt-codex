@@ -33,8 +33,7 @@ body {
 .pointer {
     z-index: 10;
     position: absolute;
-    /* align the tip of the pointer with the edge of the wheel */
-    top: -20px;
+    top: -10px;
     left: 50%;
     width: 0;
     height: 0;
