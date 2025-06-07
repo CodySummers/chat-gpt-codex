@@ -26,6 +26,8 @@ export default function Wheel<T>({
     const [showOptions, setShowOptions] = useState(false);
     const [isSpinning, setIsSpinning] = useState(false);
 
+    const MAX_WEDGES = 100;
+
     useEffect(() => {
         if (!items.length) return;
         const canvas = canvasRef.current;
@@ -34,9 +36,11 @@ export default function Wheel<T>({
         if (!ctx) return;
         const radius = canvas.width / 2;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        items.forEach((item, i) => {
-            const angleStart = (i / items.length) * Math.PI * 2;
-            const angleEnd = ((i + 1) / items.length) * Math.PI * 2;
+        const wedgeCount = Math.min(items.length, MAX_WEDGES);
+        const displayItems = items.slice(0, wedgeCount);
+        displayItems.forEach((item, i) => {
+            const angleStart = (i / wedgeCount) * Math.PI * 2;
+            const angleEnd = ((i + 1) / wedgeCount) * Math.PI * 2;
             ctx.beginPath();
             ctx.moveTo(radius, radius);
             ctx.arc(radius, radius, radius, angleStart, angleEnd);
@@ -64,14 +68,16 @@ export default function Wheel<T>({
     const spin = () => {
         setSelected(null);
         if (!items.length || isSpinning) return;
-        const randIndex = Math.floor(Math.random() * items.length);
-        const anglePerSlice = 360 / items.length;
-        const currentCenter = (rotation + randIndex * anglePerSlice + anglePerSlice / 2) % 360;
+        const wedgeCount = Math.min(items.length, MAX_WEDGES);
+        const wedgeIndex = Math.floor(Math.random() * wedgeCount);
+        const selectedIndex = Math.floor(Math.random() * items.length);
+        const anglePerSlice = 360 / wedgeCount;
+        const currentCenter = (rotation + wedgeIndex * anglePerSlice + anglePerSlice / 2) % 360;
         const delta = 360 + 180 * 5 + 90 - currentCenter + seconds * 360;
         setRotation(rotation + delta);
         setIsSpinning(true);
         setTimeout(() => {
-            setSelected(items[randIndex]);
+            setSelected(items[selectedIndex]);
             setIsSpinning(false);
         }, seconds * 1000);
     };
