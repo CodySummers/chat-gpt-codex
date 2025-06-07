@@ -1,5 +1,7 @@
 "use server";
 
+import { cache } from "react";
+
 export type Game = {
     title: string;
     sortName: string;
@@ -34,6 +36,7 @@ export async function fetchGamesPage(afterCursor?: string): Promise<GamesRespons
 
     const response = await fetch(API_URL, {
         method: "POST",
+        next: { revalidate: 60 * 60 * 24 * 3 },
         headers: {
             accept: "*/*",
             "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,sq;q=0.7",
@@ -64,7 +67,7 @@ export async function fetchGamesPage(afterCursor?: string): Promise<GamesRespons
     return data.data as GamesResponse;
 }
 
-export async function fetchAllGames(): Promise<Game[]> {
+export const fetchAllGames = cache(async (): Promise<Game[]> => {
     let allGames: Game[] = [];
     let afterCursor: string | undefined = undefined;
     let hasNextPage = true;
@@ -80,5 +83,5 @@ export async function fetchAllGames(): Promise<Game[]> {
     }
 
     return allGames;
-}
+});
 
