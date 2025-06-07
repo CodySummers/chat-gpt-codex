@@ -10,7 +10,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body>
+                <nav style={{ marginBottom: "1rem" }}>
+                    <a href="/" style={{ marginRight: "1rem" }}>Steam</a>
+                    <a href="/geforce-now">GeForce Now</a>
+                </nav>
+                {children}
+            </body>
         </html>
     );
 }
