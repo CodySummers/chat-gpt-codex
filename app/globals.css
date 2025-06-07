@@ -17,6 +17,11 @@ body {
     height: 500px;
 }
 
+.wheel-wrapper.small {
+    width: 200px;
+    height: 200px;
+}
+
 .wheel-container {
     width: 100%;
     height: 100%;
@@ -37,6 +42,13 @@ body {
     border-right: 20px solid transparent;
     border-top: 20px solid #e84118;
     transform: translateX(-50%);
+}
+
+.pointer.small {
+    top: -10px;
+    border-left-width: 10px;
+    border-right-width: 10px;
+    border-top-width: 10px;
 }
 
 .spin {
@@ -69,6 +81,19 @@ body {
 canvas {
     width: 100%;
     height: 100%;
+}
+
+.loading-spinner {
+    animation: loading-spin 2s linear infinite;
+}
+
+@keyframes loading-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media (max-width: 600px) {
