@@ -31,6 +31,13 @@ export default function GeforceNowPage() {
             characterLimit={characterLimit}
             hideText={hideText}
             title="GeForce Now Games Wheel"
+            renderResult={(g) => (
+                <>You got: {g.steamUrl ? (
+                    <a href={g.steamUrl} target="_blank" rel="noreferrer">{g.title}</a>
+                ) : (
+                    g.title
+                )}</>
+            )}
         />
     );
 }
