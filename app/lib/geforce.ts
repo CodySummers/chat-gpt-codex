@@ -1,7 +1,6 @@
 "use server";
 
 import { cache } from "react";
-import { getSteamLink } from "./steam";
 
 export type Game = {
     title: string;
@@ -84,13 +83,6 @@ export const fetchAllGames = cache(async (): Promise<Game[]> => {
         console.log(`Fetched ${allGames.length} games so far...`);
     }
 
-    const gamesWithLinks = await Promise.all(
-        allGames.map(async (g) => ({
-            ...g,
-            steamUrl: await getSteamLink(g.title),
-        }))
-    );
-
-    return gamesWithLinks;
+    return allGames;
 });
 
