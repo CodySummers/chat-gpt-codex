@@ -1,7 +1,5 @@
 "use server";
 
-export const revalidate = 60 * 60 * 24 * 180;
-
 export interface SteamCategories {
   new_releases: {
     items: { id: number; name: string }[];
@@ -41,6 +39,8 @@ export async function getSteamLink(title: string): Promise<string | null> {
       title
     )}&f=games&cc=GB`;
     const res = await fetch(url, {
+      // keep steam link cached for 180 days
+      next: { revalidate: 60 * 60 * 24 * 180 },
       headers: {
         "User-Agent":
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
