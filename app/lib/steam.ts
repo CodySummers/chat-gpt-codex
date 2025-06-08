@@ -1,4 +1,6 @@
+"use server";
 
+export const revalidate = 60 * 60 * 24 * 180;
 
 export interface SteamCategories {
   new_releases: {
