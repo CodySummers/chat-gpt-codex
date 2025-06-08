@@ -1,4 +1,4 @@
-"use server";
+
 
 export interface SteamCategories {
   new_releases: {
@@ -37,7 +37,6 @@ export async function getSteamLink(title: string): Promise<string | null> {
         "User-Agent":
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
       },
-      next: { revalidate: 60 * 60 * 24 * 180 },
     });
     if (!res.ok) {
       throw new Error("Failed to fetch steam link");

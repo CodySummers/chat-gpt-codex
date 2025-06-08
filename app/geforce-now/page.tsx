@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Wheel from "../components/Wheel";
 import { fetchAllGames, Game } from "../lib/geforce";
+import { getSteamLink } from "../lib/steam";
 import Loading from "../loading";
 
 const characterLimit = 14;
@@ -14,17 +15,12 @@ export default function GeforceNowPage() {
     const fetchLink = async (game: Game) => {
         if (game.steamUrl !== undefined) return;
         try {
-            const res = await fetch(
-                `/api/steam-link?title=${encodeURIComponent(game.title)}`
+            const url = await getSteamLink(game.title);
+            setGames((prev) =>
+                prev.map((g) =>
+                    g.title === game.title ? { ...g, steamUrl: url } : g
+                )
             );
-            if (res.ok) {
-                const data = await res.json();
-                setGames((prev) =>
-                    prev.map((g) =>
-                        g.title === game.title ? { ...g, steamUrl: data.url } : g
-                    )
-                );
-            }
         } catch (err) {
             console.error(err);
         }
