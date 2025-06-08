@@ -8,6 +8,7 @@ export interface WheelProps<T> {
     characterLimit?: number;
     hideText?: boolean;
     renderResult?: (item: T) => React.ReactNode;
+    onSelect?: (item: T) => void;
     title: string;
 }
 
@@ -17,6 +18,7 @@ export default function Wheel<T>({
     characterLimit = 14,
     hideText = false,
     renderResult,
+    onSelect,
     title,
 }: WheelProps<T>) {
     const [selected, setSelected] = useState<T | null>(null);
@@ -78,8 +80,10 @@ export default function Wheel<T>({
         setRotation(rotation + delta);
         setIsSpinning(true);
         setTimeout(() => {
-            setSelected(items[selectedIndex]);
+            const item = items[selectedIndex];
+            setSelected(item);
             setIsSpinning(false);
+            onSelect?.(item);
         }, seconds * 1000);
     };
 
