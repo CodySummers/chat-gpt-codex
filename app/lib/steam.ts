@@ -10,7 +10,13 @@ export interface SteamCategories {
 
 export async function getGames() {
   try {
-    const res = await fetch("https://store.steampowered.com/api/featuredcategories/");
+    const res = await fetch(
+      "https://store.steampowered.com/api/featuredcategories/",
+      {
+        // keep this list reasonably fresh
+        next: { revalidate: 60 * 60 * 12 },
+      }
+    );
     if (!res.ok) {
       throw new Error("Failed to fetch games");
     }
