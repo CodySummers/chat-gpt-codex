@@ -1,6 +1,7 @@
 "use server";
 
 import { cache } from "react";
+import { getSteamLink } from "./steam";
 
 export type Game = {
     title: string;
@@ -12,6 +13,7 @@ export type Game = {
         appStore: string;
         publisherName: string;
     }[];
+    steamUrl?: string | null;
 };
 
 export type PageInfo = {
@@ -28,7 +30,7 @@ export type GamesResponse = {
 };
 
 const API_URL = "https://api-prod.nvidia.com/services/gfngames/v1/gameList";
-const listSize = 100;
+const listSize = 750;
 
 export async function fetchGamesPage(afterCursor?: string): Promise<GamesResponse> {
     const afterParam = afterCursor ? ` after:"${afterCursor}"` : "";
@@ -82,6 +84,13 @@ export const fetchAllGames = cache(async (): Promise<Game[]> => {
         console.log(`Fetched ${allGames.length} games so far...`);
     }
 
-    return allGames;
+    const gamesWithLinks = await Promise.all(
+        allGames.map(async (g) => ({
+            ...g,
+            steamUrl: await getSteamLink(g.title),
+        }))
+    );
+
+    return gamesWithLinks;
 });
 
