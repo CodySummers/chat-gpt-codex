@@ -71,12 +71,12 @@ export default function Wheel<T>({
         setSelected(null);
         if (!items.length || isSpinning) return;
         const wedgeCount = Math.min(items.length, MAX_WEDGES);
-        const wedgeIndex = Math.floor(Math.random() * wedgeCount);
         const selectedIndex = Math.floor(Math.random() * items.length);
+        const wedgeIndex = selectedIndex % wedgeCount;
         const anglePerSlice = 360 / wedgeCount;
         const currentCenter = (rotation + wedgeIndex * anglePerSlice + anglePerSlice / 2) % 360;
         // Align the selected wedge with the pointer at the top of the wheel
-        const delta = 360 + 180 * 5 + 270 - currentCenter + seconds * 360;
+        const delta = 360 * (seconds + 5) + 270 - currentCenter;
         setRotation(rotation + delta);
         setIsSpinning(true);
         setTimeout(() => {
